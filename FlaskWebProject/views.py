@@ -113,8 +113,13 @@ def authorized():
 
 @app.route('/logout')
 def logout():
-    LOG.info('INFO: User ' + str(current_user.id) + ' logged out...')
+    if current_user.is_authenticated:
+        LOG.info('INFO: User ' + str(current_user.id) + ' logged out...')
+    else:
+        LOG.info('INFO: Anonymous user hit logout...')
+
     logout_user()
+
     if session.get("user"):
         session.clear()
         return redirect(
